@@ -8,22 +8,81 @@
 </head>
 <body>
 
-  <header class="site-header">
-    <div class="site-header__inner">
-      <button type ="button" class="logo" data-view="home">Shop</button>
-      <span class="site-header__tag">COMP 3512  |  Assignment 1 | Francis Ang</span>
-    </div>
+ <!-- Header shared by every view: logo on the left, menu on the right -->
+    <header class="site-header">
+    <button type="button" class="logo" data-view="home">Shop</button>
+    <nav class="site-nav" aria-label="Main">
+      <button type="button" data-view="home">Home</button>
+      <button type="button" data-view="browse">Browse</button>
+      <button type="button" data-action="open-about">About</button>
+
+      <!-- Cart button with cart count -->
+      <button type="button" data-view="cart">Cart (<span id="cart-count">0</span>)</button>
+    </nav>
   </header>
-    </div>
 
   <main>
-    <h1>Browse</h1>
+    <!-- Home view:  the only one visible when the app first starts -->
+    <section id ="view-home" class ="view">
+      <h1>Home</h1>
+      </section>
+    <!-- Browse view: hidden until the router shows it -->
+    <section id="view-browse" class="view" hidden>
+      <h1>Browse</h1>
+      <!-- Container for the product cards-->
+       <section id="results"></section>
+       </section>
 
-    <!-- Container for the product cards -->
-    <section id="results"></section>
+       <!--Single product view(for future)-->
+    <section id="view-product" class="view" hidden>
+      <h1>Product</h1>
+
+    </section>
+       <!--Shopping cart view(for future)-->
+    <section id="view-cart" class="view" hidden>
+      <h1>Shopping Cart</h1>
+
+    </section>
   </main>
 
-  <!--Needs type="module" to import the JSON file in main.js -->
+ 
+
+
+<footer class="site-footer">
+    <p>COMP 3512 Assignment 2 | Francis Ang |
+      <a href="https://github.com/fang684/comp3512-assign2">GitHub</a></p>
+</footer>
+
+
+<!--WIP-->
+<!--About us popup:<dialog>, will be opened and close by main.js-->
+<dialog id ="about-dialog">
+  <button type="button" class="dialog-close" data-action="close-about" aria-label="Close">&times;</button>
+  <h2>Abous Us</h2>
+  <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Ex quis adipisci consectetur harum, ipsam neque voluptatum reprehenderit sapiente nostrum dolores voluptatibus ad autem sit facere voluptatem? Obcaecati nostrum nobis, ullam doloribus consectetur adipisci maiores iure officia fugiat perferendis nisi, exercitationem cumque ex rem est voluptate quas libero provident asperiores cum?
+
+
+  </p>
+
+  <h3>Technologies</h3>
+  <ul>
+    <li>HTML</li>
+    <li>CSS</li>
+    <li>JavaScript</li>
+    <li>Github</li>
+  </ul>
+
+  <h3>Created by</h3>
+  <p>Francis Ang<br>
+     (201736684)
+  </p>
+
+  <p><a href="https://github.com/fang684/comp3512-assign2" target="_blank" rel="noopener">View the source on GitHub</a></p>
+  <button type="button" class="dialog-button" data-action="close-about">Close</button>
+  </dialog>
+
+   <!--Needs type="module" to import the JSON file in main.js -->
   <script type="module" src="main.js"></script>
+
 </body>
 </html>

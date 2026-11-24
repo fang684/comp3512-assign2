@@ -1,6 +1,18 @@
 /*import*/
 import config from './data-minifed.json' with { type: 'json' };
 
+// The About dialog, found once and reused by openAbout() and closeAbout()
+const aboutDialog = document.querySelector('#about-dialog');
+// Lookup table: data-action value -> function to run
+// (a table avoids a long if / else if chain as more actions are added)
+const NAV_ACTIONS = {
+    'open-about': openAbout,
+    'close-about': closeAbout
+};
+
+
+
+
 document.addEventListener('DOMContentLoaded', () => 
 {
     // Select the results container
@@ -18,7 +30,11 @@ document.addEventListener('DOMContentLoaded', () =>
     
     // Listen for clicks on the results container
     resultsContainer.addEventListener('click', handleCardClick);
+
+     // Listen for clicks anywhere on the page: menu, logo and About dialog buttons
+    document.addEventListener('click', handleNavClick);
 });
+
 
 
 
@@ -112,4 +128,68 @@ function handleCardClick(event)
             alert("Product ID: " + actionElement.dataset.id + "\nTitle: " + actionElement.dataset.title);
         }
     }
+}
+
+/** Handles clicks on anything that changes the view or opens/closes the About dialog. */
+function handleNavClick(event)
+{
+    // Menu buttons and the logo carry a data-view attribute (such as "browse")
+    const viewElement = event.target.closest('[data-view]');
+
+    if (viewElement != null)
+    {
+        showView(viewElement.dataset.view);
+        return;
+    }
+
+    // Everything else we handle here carries a data-action attribute
+    const actionElement = event.target.closest('[data-action]');
+
+    if (actionElement != null)
+    {
+        // Look the action up in the table above
+        const handler = NAV_ACTIONS[actionElement.dataset.action];
+
+        // Actions not in the table (like the cards' own view/add) are ignored here
+        if (handler != null)
+        {
+            handler();
+        }
+    }
+}
+
+/** Shows the view with the given name (e.g. "home") and hides all the others. */
+function showView(viewName)
+{
+    // Containers are named "view-" + the view name, e.g. #view-home
+    const target = document.querySelector('#view-' + viewName);
+
+    // Do nothing if there is no such view, so we never hide everything
+    if (target == null)
+    {
+        return;
+    }
+
+    // Hide every view except the one that was asked for
+    const views = document.querySelectorAll('.view');
+
+    for (const view of views)
+    {
+        view.hidden = (view !== target);
+    }
+
+    // Start the new view at the top of the page
+    window.scrollTo(0, 0);
+}
+
+/** Opens the About dialog as a modal (dims the page behind it). */
+function openAbout()
+{
+    aboutDialog.showModal();
+}
+
+/** Closes the About dialog. */
+function closeAbout()
+{
+    aboutDialog.close();
 }
