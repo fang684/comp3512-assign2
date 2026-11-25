@@ -9,17 +9,17 @@
 <body>
 
  <!-- Header shared by every view: logo on the left, menu on the right -->
-    <header class="site-header">
-    <button type="button" class="logo" data-view="home">Shop</button>
-    <nav class="site-nav" aria-label="Main">
-      <button type="button" data-view="home">Home</button>
-      <button type="button" data-view="browse">Browse</button>
-      <button type="button" data-action="open-about">About</button>
+<header class="site-header">
+  <button type="button" class="logo" data-view="home">Shop</button>
+  <nav class="site-nav" aria-label="Main">
+    <button type="button" data-view="home" title="Home"><img src="icons/home.svg" alt="Home" class="icon-button__img"></button>
+    <button type="button" data-view="browse" title="Browse"><img src="icons/browse.svg" alt="Browse" class="icon-button__img"></button>
+    <button type="button" data-action="open-about" title="About"><img src="icons/about.svg" alt="About" class="icon-button__img"></button>
 
-      <!-- Cart button with cart count -->
-      <button type="button" data-view="cart">Cart (<span id="cart-count">0</span>)</button>
-    </nav>
-  </header>
+    <!-- Cart button with cart count -->
+    <button type="button" data-view="cart" title="Cart"><img src="icons/cart.svg" alt="Cart" class="icon-button__img"><span>(<span id="cart-count">0</span>)</span></button>
+  </nav>
+</header>
 
   <main>
     <!-- Home view:  the only one visible when the app first starts -->
@@ -55,28 +55,34 @@
 
 
 <!--WIP-->
-<!--About us popup:<dialog>, will be opened and close by main.js-->
-<dialog id ="about-dialog">
-  <button type="button" class="dialog-close" data-action="close-about" aria-label="Close">&times;</button>
-  <h2>Abous Us</h2>
-  <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Ex quis adipisci consectetur harum, ipsam neque voluptatum reprehenderit sapiente nostrum dolores voluptatibus ad autem sit facere voluptatem? Obcaecati nostrum nobis, ullam doloribus consectetur adipisci maiores iure officia fugiat perferendis nisi, exercitationem cumque ex rem est voluptate quas libero provident asperiores cum?
 
+<!--About us popup:<dialog>, will be opened and close by main.js-->
+<dialog id ="about-dialog" class="about-dialog">
+
+  <!--First close button for dialogue-->
+  <button type="button" class="dialog-close" data-action="close-about" aria-label="Close">&times;</button>
+  <h2>About Us</h2>
+Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quasi, ullam?
+</ul>
 
   </p>
 
-  <h3>Technologies</h3>
-  <ul>
-    <li>HTML</li>
-    <li>CSS</li>
-    <li>JavaScript</li>
-    <li>Github</li>
-  </ul>
+    <h3>Technologies</h3>
+<ul>
+  <li>HTML5 &amp; CSS3</li>
+  <li>JavaScript (ES6 Modules)</li>
+  <li><a href="https://fonts.google.com/" target="_blank" rel="noopener">Google Fonts</a> (Google Sans)</li>
+  <li><a href="https://fonts.google.com/icons" target="_blank" rel="noopener">Google Material Icons</a></li>
+  <li>GitHub &amp; GitHub Pages</li>
+</ul>
+
 
   <h3>Created by</h3>
   <p>Francis Ang<br>
      (201736684)
   </p>
 
+  <!--Second close button for dialogue-->
   <p><a href="https://github.com/fang684/comp3512-assign2" target="_blank" rel="noopener">View the source on GitHub</a></p>
   <button type="button" class="dialog-button" data-action="close-about">Close</button>
   </dialog>

@@ -1,6 +1,39 @@
 /*import*/
 import config from './data-minifed.json' with { type: 'json' };
 
+
+
+/** WIP (11-24-2026)
+ * Gets the product list. Uses the localStorage cache when available;
+ * otherwise fetches from the API and caches the result.
+ * @returns {Promise<Array>} the array of products
+ */
+export async function getProducts() {
+const storedData = localStorage.getItem('products');
+    
+    if (storedData) {        // truthy: a string was found
+      return JSON.parse(storedData);
+    }
+    
+    // Nothing cached, so fetch from the API
+    const response = await fetch('https://dummyjson.com/products?limit=100');
+
+    if (!response.ok) {   // Verify the HTTP request first
+        throw new Error(`Failed to fetch products: ${response.status}`);
+  }
+    // Parse the JSON response body and extract the nested 'products' array
+    const data = await response.json();
+    const products = data.products; 
+
+    //covert the array to string to cache it in localStorage for next time
+    localStorage.setItem('products', JSON.stringify(products));
+    return products;
+}
+
+
+
+
+
 // The About dialog, found once and reused by openAbout() and closeAbout()
 const aboutDialog = document.querySelector('#about-dialog');
 // Lookup table: data-action value -> function to run
@@ -9,8 +42,6 @@ const NAV_ACTIONS = {
     'open-about': openAbout,
     'close-about': closeAbout
 };
-
-
 
 
 document.addEventListener('DOMContentLoaded', () => 

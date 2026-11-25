@@ -13,10 +13,37 @@
   --accent: #66c0f4;     
   --text-bright: #ffffff; 
   --accent-soft: #588a1b;
-  --radius: 4px;       
+  --accent-light: #7DA10E;
+
+  /*same radius for elements*/
+  --radius: 4px;
+  --radius-round: 8px;
+
+   /*same shadows for elements*/
   --shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
   --shadow-hover: 0 6px 12px rgba(0, 0, 0, 0.5);
 }
+
+/* All links settings, (global) */
+a {
+    display: inline-block;   /* experiment: inline-block to transform links when hovered :D */
+    color: var(--accent);
+}
+
+a:visited {
+  color: var(--accent);   /* keeps visited links from turning purple */
+}
+
+/* All links hover settings, (global) */
+a:hover,
+a:focus-visible /*For keyboard(experiment)*/ {
+  color: var(--text-bright);
+  transform: scale(1.05);
+}
+
+
+
+
 
 /* Apply border-box to all elements */
 *, *::before, *::after {
@@ -25,8 +52,11 @@
 
 /* Base page styling */
 body {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
   margin: 0;
-  font-family: Arial, sans-serif;
+  font-family: 'Google Sans';
   color: var(--text);
   background-color: var(--bg);
   line-height: 1.4;
@@ -34,51 +64,89 @@ body {
 
 /* Header container */
 .site-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px;
+  gap: calc();
   background-color: var(--surface);
   border-bottom: 1px solid var(--border);
 }
 
-.site-header__inner {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 14px 24px;
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: 16px;
+/* buttons styling WIP */
+.site-nav button {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  background: #588a1b;
+  border-radius: var(--radius-round);
+  border: 0;
+  padding: 8px 12px;
+
+  /*text*/
+  color: var(--text);
+  cursor: pointer;
+  font-family: inherit;
 }
+
+.site-nav button:hover{
+  transform: scale(1.1); /* Makes the logo pop out slightly */
+  background: linear-gradient(to bottom, #8cd730 5%, #659e20 95%);/* Makes the logo pop out by colour */
+
+}
+
+
+/*icon styling*/
+.icon-button__img{
+  width: 20px;
+  height: 20px;
+  display: block;
+}
+
 
 /* Logo link styling */
 .logo {
+  cursor: pointer;
+  background: var(--accent-soft);
+   border-radius: var(--radius-round);
+  border: 0;
+  
+  /*text*/
+  padding: 5px;
+  font-family: inherit;
   font-size: 1.4rem;
   font-weight: 800;
-  color: var(--accent);
+  color: var(--text-bright);
   text-decoration: none; /* Removes the default link underline */
   display: inline-block; /* Required for the transform property to work on text */
   transition: transform 0.2s ease, color 0.2s ease;
 }
 
-.logo:hover {
-  transform: scale(1.1); /* Makes the logo pop out slightly */
-  color: var(--accent-soft); 
+.icon-button__img{
+  width: 22px;
+  height: 22px;
 }
 
-.site-header__tag {
-  font-size: 0.85rem;
-  color: var(--text-muted);
+
+.logo:hover {
+  transform: scale(1.1); /* Makes the logo pop out slightly */
+  background: linear-gradient(to bottom, #8cd730 5%, #659e20 95%);/* Makes the logo pop out by colour */
 }
+
 
 /* Main content wrapper */
 main {
   max-width: 1200px;
-  margin: 0 auto;
+  width: 100%;
+  margin: auto;
   padding: 24px;
+  flex: 1;
 }
 
 h1 {
   margin: 0 0 20px;
   font-size: 1.8rem;
-  color: var(--accent-dark);
+  color: var(--text-bright);
 }
 
 /* Responsive grid for products */
@@ -94,7 +162,7 @@ h1 {
   flex-direction: column;
   background-color: var(--surface);
   border: 1px solid var(--border);
-  border-radius: var(--radius);
+  border-radius: var(--radius-round);
   box-shadow: var(--shadow);
   overflow: hidden;
   transition: box-shadow 0.2s ease, transform 0.2s ease;
@@ -117,7 +185,7 @@ h1 {
   padding: 12px;
   border: 0;
   border-bottom: 1px solid var(--border);
-  background-color: #fafafb;
+  background-color: var(--text);
   cursor: pointer;
 }
 
@@ -181,7 +249,7 @@ h1 {
   margin: 0;
   font-size: 1rem;
   font-weight: 700;
-  color: #beee11; /* "Steam" price green" */
+  color: var(--accent-light); 
 }
 
 /* Add to Cart button */
@@ -190,9 +258,9 @@ h1 {
   width: 30px;
   height: 30px;
   border: 1px solid #477015;
-  border-radius: var(--radius);
+  border-radius: var(--radius-round);
   background: linear-gradient(to bottom, #75b126 5%, #588a1b 95%);
-  color: var(--accent-dark);
+  color: var(--text-bright);
   font-size: 1.3rem;
   font-weight: 700;
   line-height: 1;
@@ -210,4 +278,61 @@ h1 {
 
 .add-button:active {
   transform: scale(0.95); /* Shrink button when clicked */
+}
+
+
+/**About dialogue settings**/
+.about-dialog{
+  background-color: var(--bg);
+  color: var(--text-bright);
+  border: 3px;
+  border-radius: var(--radius);
+  padding: 24px;
+  max-width: 480px;
+  width: 90%;
+  box-shadow: var(--shadow-hover);
+}
+
+
+/* Darkens the page behind the modal when open */
+.about-dialog::backdrop {
+  background-color: rgba(0, 0, 0, 0.8); /* 0.8 = 80% dark;?*/
+}
+
+
+
+.dialog-close{
+  color: var(--text-bright);
+  cursor: pointer;
+  gap: 3px;
+  background: #588a1b;
+  border-radius: 3px;
+  border: 0;
+  padding: 1px;
+
+}
+
+.dialog-button{
+  color: var(--text-bright);
+  cursor: pointer;
+  gap: 0px;
+  background: #588a1b;
+  border-radius: 2px;
+  border: 0;
+}
+
+/*dialog hovered*/
+.dialog-button:hover{
+  transform: scale(1.1); /* Makes the logo pop out slightly */
+  background: linear-gradient(to bottom, #8cd730 5%, #659e20 95%);/* Makes the logo pop out by colour */
+}
+
+
+/*footer settings*/
+.site-footer {
+  text-align: center;
+  padding: 8px;
+  background-color: var(--surface);
+  border-top: 1px solid var(--border);
+  color: var(--text-muted);
 }
