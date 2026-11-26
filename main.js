@@ -1,22 +1,23 @@
-/*import*/
-import config from './data-minifed.json' with { type: 'json' };
+// /*Old import*/
+// import config from './data-minifed.json' with { type: 'json' };
 
 
 
-/** WIP (11-24-2026)
+/** (Assignment 2);
  * Gets the product list. Uses the localStorage cache when available;
  * otherwise fetches from the API and caches the result.
  * @returns {Promise<Array>} the array of products
  */
-export async function getProducts() {
-const storedData = localStorage.getItem('products');
+export async function getProducts() 
+{
+    const storedData = localStorage.getItem('products');
     
     if (storedData) {        // truthy: a string was found
       return JSON.parse(storedData);
     }
     
     // Nothing cached, so fetch from the API
-    const response = await fetch('https://dummyjson.com/products?limit=100');
+    const response = await fetch(`https://dummyjson.com/products?limit=100`);
 
     if (!response.ok) {   // Verify the HTTP request first
         throw new Error(`Failed to fetch products: ${response.status}`);
@@ -29,6 +30,25 @@ const storedData = localStorage.getItem('products');
     localStorage.setItem('products', JSON.stringify(products));
     return products;
 }
+
+
+async function getProductById(id)
+{
+    const response = await fetch(`https://dummyjson.com/products/${id}`)
+
+    if (!response.ok){
+        throw new Error(`Failed to fetch products: ${response.status}`);
+    }
+     
+    // Parse the JSON response body and extract the nested 'products' array
+    const data = await response.json();
+    return data;
+
+
+}
+
+
+
 
 
 
@@ -44,16 +64,19 @@ const NAV_ACTIONS = {
 };
 
 
-document.addEventListener('DOMContentLoaded', () => 
+// DOM CONTENT LOADED!!!
+// (async) Runs once the HTML finishes loading. Marked async so we can await getProducts( ASsignment 2)
+document.addEventListener('DOMContentLoaded', async() => //Async 
 {
     // Select the results container
     const resultsContainer = document.querySelector('#results');
+
     
-    // Get the first 20 products
-    const firstTwentyProducts = config.products.slice(0, 20);
+    const products = await getProducts(); // Load products from localStorage cache or fetch from the API
     
-    // Build cards for the first 20 products
-    for (const product of firstTwentyProducts) 
+
+    // Build and display a card for each product, not just 20 anymore :D
+    for (const product of products) 
     {
         const card = createProductCard(product);
         resultsContainer.appendChild(card);
@@ -138,8 +161,8 @@ function createProductCard(product)
     return card;
 }
 
-/** Click events handler  inside the results container. */
-function handleCardClick(event) 
+/* Handles clicks on product cards, async in order to wait for getProductById() */
+async function handleCardClick(event) 
 {
     // Find the closest element with a data action attribute
     const actionElement = event.target.closest('[data-action]');
@@ -148,10 +171,12 @@ function handleCardClick(event)
     {
         const action = actionElement.dataset.action;
         
-        // Check if thumbnail was clicked
+        // Fetch the full product details and switch to the single product view
         if (action === 'view') 
         {
-            alert("Product ID: " + actionElement.dataset.id);
+            const product = await getProductById(actionElement.dataset.id);
+            renderProductView(product);
+            showView(`product`);
         }
         // Check if Add to Cart button was clicked
         else if (action === 'add') 
@@ -160,6 +185,25 @@ function handleCardClick(event)
         }
     }
 }
+
+function renderProductView(product){
+    const viewProduct = document.querySelector("#view-product");
+    viewProduct.replaceChildren();
+
+    const breadcrumb = document.createElement("p");
+    const image = document.createElement("img");
+    const title = document.createElement("h1");
+    const price = document.createElement("p");
+    const description = document.createElement("p");
+
+    viewProduct.append(breadcrumb, image, title, price, description);
+
+}
+
+
+
+
+
 
 /** Handles clicks on anything that changes the view or opens/closes the About dialog. */
 function handleNavClick(event)
