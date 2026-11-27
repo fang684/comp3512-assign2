@@ -40,7 +40,7 @@ async function getProductById(id)
         throw new Error(`Failed to fetch products: ${response.status}`);
     }
      
-    // Parse the JSON response body and extract the nested 'products' array
+    //Parse the JSON response body for the single product
     const data = await response.json();
     return data;
 
@@ -186,19 +186,109 @@ async function handleCardClick(event)
     }
 }
 
-function renderProductView(product){
+/* Builds and displays the single product view */
+function renderProductView(product)
+{
     const viewProduct = document.querySelector("#view-product");
     viewProduct.replaceChildren();
 
+    // Create layout wrappers
+    const layout = document.createElement("div");
+    const infoColumn = document.createElement("div");
+
+    layout.classList.add("product-layout");
+    infoColumn.classList.add("product-info");
+
+    // Create main product elements
     const breadcrumb = document.createElement("p");
     const image = document.createElement("img");
     const title = document.createElement("h1");
     const price = document.createElement("p");
     const description = document.createElement("p");
+    const rating = document.createElement("p");
+    const stock = document.createElement("p");
 
-    viewProduct.append(breadcrumb, image, title, price, description);
+    // Add classes to main elements
+    breadcrumb.classList.add("product-breadcrumb");
+    image.classList.add("product-image");
+    title.classList.add("product-title");
+    price.classList.add("product-price");
+    description.classList.add("product-description");
+    rating.classList.add("product-rating");
+    stock.classList.add("product-stock");
 
+    // Fill in main product details
+    breadcrumb.textContent = `Home > ${product.category} > ${product.title}`;
+    image.src = product.images[0];
+    image.alt = product.title;
+    title.textContent = product.title;
+    price.textContent = "$" + product.price.toFixed(2);
+    description.textContent = product.description;
+    rating.textContent = `Rating: ${product.rating} / 5`;
+    stock.textContent = `Stock: ${product.stock} available`;
+
+    // Create quantity input and Add to Cart button
+    const controls = document.createElement("div");
+    controls.classList.add("product-controls");
+
+    const qtyInput = document.createElement("input");
+    qtyInput.type = "number";
+    qtyInput.min = "1";
+    qtyInput.max = product.stock;
+    qtyInput.value = "1";
+    qtyInput.classList.add("product-qty");
+
+    const addBtn = document.createElement("button");
+    addBtn.type = "button";
+    addBtn.classList.add("product-add-btn");
+    addBtn.textContent = "Add to Cart";
+    addBtn.dataset.action = "add";
+    addBtn.dataset.id = product.id;
+    addBtn.dataset.title = product.title;
+
+    controls.append(qtyInput, addBtn);
+
+    // Put right-column items together
+    infoColumn.append(title, price, rating, stock, description, controls);
+
+    // Put left image and right info into layout
+    layout.append(image, infoColumn);
+
+    // Put breadcrumb and main layout into view
+    viewProduct.append(breadcrumb, layout);
+
+    //Reviews for the product view if they exist on the product object(WIP)
+    if (Array.isArray(product.reviews) && product.reviews.length > 0)
+    {
+        const reviewsSection = document.createElement("section");
+        reviewsSection.classList.add("product-reviews");
+
+        const reviewsHeading = document.createElement("h2");
+        reviewsHeading.textContent = "Customer Reviews";
+        reviewsSection.appendChild(reviewsHeading);
+
+        for (const review of product.reviews)
+        {
+            const reviewCard = document.createElement("div");
+            reviewCard.classList.add("review-card");
+
+        const reviewer = document.createElement("p");
+            reviewer.classList.add("review-author");
+            reviewer.textContent = `${review.reviewerName} (${review.rating}/5)`;
+
+            const comment = document.createElement("p");
+            comment.classList.add("review-comment");
+            comment.textContent = review.comment;
+
+            reviewCard.append(reviewer, comment);
+            reviewsSection.appendChild(reviewCard);
+        }
+
+        viewProduct.appendChild(reviewsSection);
+    }
 }
+
+
 
 
 

@@ -333,3 +333,37 @@ h1 {
   border-top: 1px solid var(--border);
   color: var(--text-muted);
 }
+
+
+/* Single Product View (WIP) */ 
+.product-layout {
+    display: flex;
+    gap: 24px;
+    align-items: flex-start;
+}
+
+.product-image {
+    max-width: 380px;
+    width: 100%;
+    height: auto;
+}
+
+.product-info {
+    flex: 1;
+}
+
+.product-controls {
+    display: flex;
+    gap: 10px;
+    margin-top: 12px;
+}
+
+.product-qty {
+    width: 70px;
+}
+
+.review-card {
+    margin-top: 10px;
+    padding: 10px;
+    border: 1px solid #ccc;
+}
